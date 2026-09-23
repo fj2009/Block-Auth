@@ -24,18 +24,28 @@ registrados en `docs/errores/`.
 
 ## Comandos rápidos
 
-```bash
+bash
 # Instalar dependencias, compilar y ejecutar tests (primera vez)
+```
 ./instalar.sh
-
+```
 # Lanzar el sistema: nodo + despliegue + seed (si el nodo no estaba, lo arranca)
+```
 ./iniciar.sh start
-
+```
 # Estado, parada, reinicio desde cero
+```
 ./iniciar.sh status
-./iniciar.sh stop        # para (PID registrado) solo el nodo arrancado por este script
+```
+```
+./iniciar.sh stop      # para (PID registrado) solo el nodo arrancado por este script
+```
+```
 ./iniciar.sh reset       # para, borra despliegues y relanza todo
+```
+```
 ./iniciar.sh log         # seguir el log del nodo
+```
 
 # Gestión "manual" equivalente:
 npx hardhat node --port 8545                                          # nodo local persistente
