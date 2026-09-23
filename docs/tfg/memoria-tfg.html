@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Memoria Técnica — Autenticación Descentralizada basada en Blockchain</title>
+<style>
+  :root {
+    --primary: #123c63;
+    --accent: #0e7490;
+    --gold: #b8860b;
+    --light: #f1f5f9;
+    --ink: #1e293b;
+    --muted: #475569;
+    --line: #cbd5e1;
+  }
+
+  @page {
+    size: A4;
+    margin: 2.2cm 1.9cm 2.0cm 1.9cm;
+    @bottom-left { content: "TFG · Telecomunicaciones"; font-size: 8pt; color: #64748b; }
+    @bottom-right { content: "Página " counter(page) " de " counter(pages); font-size: 8pt; color: #64748b; }
+    @top-right { content: "Memoria TFG · Autenticación Descentralizada";font-size: 8pt; color: #94a3b8; }
+  }
+  @page cover { margin: 0; @bottom-left { content: none } @bottom-right { content: none } @top-right { content: none } }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans", "DejaVu Sans", sans-serif;
+    font-size: 10pt;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  code, pre, .mono { font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace; }
+  code { background: #eef2f7; padding: 0.08em 0.3em; border-radius: 3px; font-size: 8.5pt; color: #0f172a; }
+  pre {
+    background: #0f172a; color: #e2e8f0; padding: 10px 14px; border-radius: 6px;
+    font-size: 8.2pt; line-height: 1.4; white-space: pre-wrap; overflow-wrap: break-word;
+    border-left: 3px solid var(--accent); page-break-inside: avoid;
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: 8.2pt; }
+
+  /* ===== Portada ===== */
+  .cover { page: cover; width: 100%; height: 100vh; background: var(--primary); color: #fff;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .cover .frame { border: 1px solid rgba(255,255,255,.35); border-radius: 12px;
+    padding: 60px 55px; margin: 0 40px; }
+  .cover .uni { font-size: 12pt; letter-spacing: 3px; text-transform: uppercase; color: #cbd5e1; }
+  .cover h1 { color: #f8fafc; margin-top: 36px; margin-bottom: 10px; font-size: 23pt; line-height: 1.25; }
+  .cover .subtitle { color: #7dd3fc; font-size: 12.5pt; margin-bottom: 44px; }
+  .cover .meta { font-size: 10.5pt; color: #e2e8f0; line-height: 1.9; }
+  .cover .meta b { color: #f8fafc; }
+  .cover .badge { display: inline-block; margin-top: 30px; border: 1px solid var(--gold);
+    color: #ffd27a; padding: 4px 16px; border-radius: 999px; font-size: 9pt; letter-spacing: 1px; }
+
+  /* ===== Índice ===== */
+  .toc { page-break-before: always; }
+  .toc h2 { color: var(--primary); border-bottom: 2px solid var(--gold); padding-bottom: 6px; }
+  .toc ol { list-style: none; padding-left: 0; }
+  .toc li { margin: 6px 0; font-size: 10pt; }
+  .toc a { text-decoration: none; color: var(--ink); }
+  .toc a::after { content: target-counter(attr(href), page); float: right; color: var(--accent); font-weight: bold; }
+  .toc li.lvl2 { padding-left: 20px; font-size: 9pt; color: var(--muted); }
+
+  /* ===== Secciones ===== */
+  h2.sec { page-break-before: always; color: var(--primary); font-size: 16pt;
+    border-left: 5px solid var(--accent); padding-left: 12px; margin-top: 0; }
+  h3 { color: var(--primary); font-size: 12pt; margin-top: 22px; }
+  h4 { color: var(--accent); font-size: 10.5pt; margin-top: 16px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 6px 0 10px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+
+  .note { background: var(--light); border-left: 4px solid var(--gold); padding: 8px 12px; border-radius: 0 5px 5px 0; font-size: 9.3pt; }
+  .ok { background: #ecfdf5; border: 1px solid #a7f3d0; padding: 8px 12px; border-radius: 5px; }
+  .warn { background: #fff7ed; border: 1px solid #fed7aa; padding: 8px 12px; border-radius: 5px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 8.8pt; page-break-inside: avoid; }
+  th { background: var(--primary); color: #fff; text-align: left; padding: 7px 9px; }
+  td { border-bottom: 1px solid var(--line); padding: 6px 9px; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  caption { caption-side: top; text-align: left; font-weight: bold; color: var(--primary); padding-bottom: 4px; font-size: 9pt; }
+
+  .grid2 { display: flex; gap: 14px; }
+  .grid2 > div { flex: 1; }
+  .kpi { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--light); }
+  .kpi b { color: var(--primary); font-size: 13pt; display: block; }
+  .tag { display: inline-block; background: var(--accent); color: #fff; border-radius: 999px;
+    padding: 1px 10px; font-size: 8pt; margin-right: 4px; }
+  .tag.green { background: #16a34a; }
+  .tag.red { background: #dc2626; }
+  .tag.gray { background: #64748b; }
+  .small { font-size: 8.5pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ================= PORTADA ================= -->
+<div class="cover">
+  <div class="frame">
+    <div class="uni">Trabajo de Fin de Grado · Ingeniería de Telecomunicaciones</div>
+    <h1>Autenticación Descentralizada basada en Blockchain para el Control de Acceso a Datos</h1>
+    <div class="subtitle">Sustitución de los servidores de identidad centrales (RADIUS / AD) por un
+    sistema de Identidad Autosoberana (SSI) sobre blockchain, con fuente de verdad descentralizada
+    de credenciales y permisos.</div>
+    <div class="meta">
+      <div><b>Autor:</b> <span style="color:#7dd3fc">[Nombre del alumno]</span></div>
+      <div><b>Tutor:</b> <span style="color:#7dd3fc">[Nombre del tutor]</span></div>
+      <div><b>Fecha:</b> Curso 2026-2027 &nbsp;·&nbsp; <b>Plataforma de desarrollo:</b> Kali Linux 2026.3</div>
+    </div>
+    <div class="badge">IMPLEMENTACIÓN MVP · RED LOCAL · COSTE CERO</div>
+  </div>
+</div>
+
+<!-- ================= ÍNDICE ================= -->
+<div class="toc">
+  <h2>Índice</h2>
+  <ol>
+    <li><a href="#s1">1. Resumen ejecutivo</a></li>
+    <li><a href="#s2">2. Motivación y problemática</a></li>
+    <li><a href="#s3">3. Objetivos del TFG</a></li>
+    <li><a href="#s4">4. Estado del arte: Identidad Autosoberana</a></li>
+    <li><a href="#s5">5. Decisiones de diseño (DEC-01 … DEC-09)</a></li>
+    <li><a href="#s6">6. Arquitectura del sistema</a></li>
+    <li class="lvl2"><a href="#s6a">6.1 Capas lógicas</a></li>
+    <li class="lvl2"><a href="#s6b">6.2 Flujo de autenticación y autorización</a></li>
+    <li><a href="#s7">7. Módulo 1 — Entorno y blockchain local</a></li>
+    <li><a href="#s8">8. Módulo 2 — Contratos de identidad, revocación y permisos</a></li>
+    <li class="lvl2"><a href="#s8a">8.1 IdentityRegistry</a></li>
+    <li class="lvl2"><a href="#s8b">8.2 RevocationRegistry</a></li>
+    <li class="lvl2"><a href="#s8c">8.3 AccessPolicyRegistry (RBAC)</a></li>
+    <li class="lvl2"><a href="#s8d">8.4 Story del "momento mágico"</a></li>
+    <li><a href="#s9">9. Módulo 3 — Proxy Validador (diseño)</a></li>
+    <li><a href="#s10">10. Módulo 4 — PostgreSQL y PEP (diseño)</a></li>
+    <li><a href="#s11">11. Módulo 5 — Integración y pruebas (diseño)</a></li>
+    <li><a href="#s12">12. Seguridad en el diseño</a></li>
+    <li><a href="#s13">13. Métricas y evaluación</a></li>
+    <li><a href="#s14">14. Registro de dificultades (errores reales)</a></li>
+    <li><a href="#s15">15. Guía de reproducción</a></li>
+    <li><a href="#s16">16. Trabajo futuro</a></li>
+    <li><a href="#s17">17. Referencias del repositorio</a></li>
+  </ol>
+  <div class="note" style="margin-top:18px">Metodología: desarrollo incremental por módulos con
+  ramas Git, criterios de aceptación verificables por módulo y documentación de cada error y su
+  causa raíz (apartado 14), siguiendo la estrategia "primero el plan, luego módulo a módulo".</div>
+</div>
+
+<!-- ================= 1 ================= -->
+<h2 class="sec" id="s1">1. Resumen ejecutivo</h2>
+<p>Este proyecto implementa un <b>sistema de autenticación y autorización descentralizado</b> cuya
+fuente de verdad para identidades, credenciales y permisos reside en una <b>blockchain Ethereum local</b>,
+en lugar de un servidor central de identidad (RADIUS, Active Directory o la propia tabla
+<code>users</code>/<code>roles</code> de una base de datos). El objetivo práctico es <b>gobernar el acceso a
+una base de datos</b> — quién puede leer, escribir o borrar cada tabla — eliminando el punto único de
+fallo del modelo centralizado y blindando la autenticación frente a ataques de denegación de servicio
+(DoS).</p>
+<p>El sistema se construye como un <b>MVP demostrable</b> sobre una red local de coste cero (sin gas,
+sin dependencia de internet): usuario → <b>Proxy Validador</b> → base de datos. El Proxy es la única
+puerta: verifica la identidad del usuario (firma digital sobre la petición), comprueba sus permisos
+contra la blockchain y solo entonces ejecuta la consulta con un usuario de base de datos restringido.</p>
+<div class="grid2">
+  <div class="kpi"><b>0 €</b>coste (red local, sin gas)</div>
+  <div class="kpi"><b>100 %</b>cobertura de tests de contratos</div>
+  <div class="kpi"><b>3</b>contratos sólidos compilados</div>
+  <div class="kpi"><b>16</b>tests verdes</div>
+</div>
+<div class="ok">Estado actual: Módulos 1 y 2 implementados y verificados (contratos y RBAC completos,
+cobertura 100 %). Módulos 3–5 definidos con diseño cerrado (secciones 9–11).</div>
+
+<!-- ================= 2 ================= -->
+<h2 class="sec" id="s2">2. Motivación y problemática</h2>
+<h3>2.1 El punto único de fallo de la identidad centralizada</h3>
+<p>Los modelos clásicos de control de acceso — RADIUS en redes cableadas/IP, Active Directory en
+entornos corporativos, o la tabla de usuarios del propio SGBD — concentran toda la decisión de
+acceso en <b>un único servidor</b>. Esta concentración tiene tres consecuencias estructurales:</p>
+<ul>
+  <li><b>Disponibilidad:</b> la caída del servidor de identidad bloquea <i>toda</i> la autenticación
+  (la red se queda sin accesos legítimos).</li>
+  <li><b>Resiliencia ante DoS:</b> un ataque de denegación de servicio dirigido al servidor de
+  identidad paraliza el sistema completo; el atacante solo necesita robar un punto.</li>
+  <li><b>Confianza y privacidad:</b> el servidor central conoce todas las credenciales; un robo de
+  esa base equivale al robo de todas las identidades.</li>
+</ul>
+<h3>2.2 Por qué blockchain aporta una alternativa</h3>
+<p>Una blockchain <b>permisionada o local</b> aporta tres propiedades a la decisión de acceso:</p>
+<ul>
+  <li><b>Estado distribuido:</b> la misma verdad sobre identidades y permisos se replica en varios
+  nodos; no existe un único servidor que derribar.</li>
+  <li><b>Inmutabilidad y auditoría:</b> cada concesión, revocación o rotación de clave queda
+  registrada en un ledger que no se puede alterar retroactivamente.</li>
+  <li><b>Soberanía del usuario:</b> el portador de la identidad firma sus propias peticiones con su
+  clave privada; el sistema nunca almacena claves de usuario.</li>
+</ul>
+<div class="warn">Delimitación: el MVP usa una <b>red local de un nodo</b> (Hardhat) para demostrar el
+mecanismo; la mejora a varios nodos (p. ej. Besu IBFT) está prevista en la hoja de ruta (sección 16),
+sin cambios en los contratos.</div>
+
+<!-- ================= 3 ================= -->
+<h2 class="sec" id="s3">3. Objetivos del TFG</h2>
+<table>
+  <caption>Objetivos general y específicos</caption>
+  <tr><th style="width:8%">ID</th><th style="width:32%">Objetivo</th><th>Cómo se demuestra</th></tr>
+  <tr><td>OG</td><td>Probar que la blockchain puede sustituir al servidor central de identidad
+  para controlar el acceso a datos, sin punto único de fallo.</td>
+  <td>Arquitectura operativa usuario → proxy → BD gobernada por contratos.</td></tr>
+  <tr><td>OE1</td><td>Definir un modelo de identidad autosoberana (DID + claves de wallet).</td>
+  <td>DIDs verificables firmando peticiones con claves privadas; rotación de clave autogestionada.</td></tr>
+  <tr><td>OE2</td><td>Implementar RBAC granular en cadena (rol → tabla → operación).</td>
+  <td>Contrato <code>AccessPolicyRegistry</code> con <code>can(did, tabla, op)</code>.</td></tr>
+  <tr><td>OE3</td><td>Resolver la revocación de accesos en caliente.</td>
+  <td>Revocación reversible de rol y revocación permanente de identidad, con eventos.</td></tr>
+  <tr><td>OE4</td><td>Diseñar el Proxy que traduzca identidad → SQL sin exponer credenciales de BD.</td>
+  <td>Arquitectura sección 6 y diseño Módulo 3/4.</td></tr>
+  <tr><td>OE5</td><td>Medir y comparar el coste de autenticar por blockchain vs. forma tradicional.</td>
+  <td>Plan de métricas, sección 13.</td></tr>
+</table>
+
+<!-- ================= 4 ================= -->
+<h2 class="sec" id="s4">4. Estado del arte: Identidad Autosoberana (SSI)</h2>
+<p>El modelo <b>SSI (Self-Sovereign Identity)</b>, estandarizado en el W3C, invierte el control de la
+identidad: el sujeto es el <i>holder</i> de sus credenciales y las presenta bajo demanda, sin que un
+servidor central las custodie. Se apoya en tres piezas:</p>
+<table>
+  <caption>Trinidad técnica W3C aplicada al proyecto</caption>
+  <tr><th>Pieza</th><th>Rol en el papel</th><th>Implementación en el MVP</th></tr>
+  <tr><td><b>DID</b> (Decentralized Identifier)</td><td>Identificador único, permanente y
+  verificable del sujeto.</td><td><code>did:web:tfg:demo:doctorA</code>; en el registro se almacena
+  <code>keccak256(DID)</code>. (DEC-08)</td></tr>
+  <tr><td><b>VC</b> (Verifiable Credential)</td><td>Atributo firmado por un emisor (RRHH, IT).</td>
+  <td>En el MVP el "rol" se modela como una política de organización firmada por el admin
+  (<code>assignRole</code>). Extensión a VC completas prevista (sección 16).</td></tr>
+  <tr><td><b>VP</b> (Verifiable Presentation)</td><td>Prueba criptográfica de que se posee el atributo.</td>
+  <td>Firma EIP-191 sobre la petición (payload + nonce + timestamp) con la clave de la wallet.</td></tr>
+</table>
+<h3>4.1 Elección de blockchain</h3>
+<table>
+  <caption>Comparativa de alternativas (resumen de DEC-02)</caption>
+  <tr><th>Criterio</th><th>Redes públicas (ETH/Polygon)</th><th>Hyperledger Fabric</th><th><b>Local Hardhat / Besu (elegido)</b></th></tr>
+  <tr><td>Gas / coste</td><td>€ por transacción</td><td>Sin moneda (MSP)</td><td><b>Cero real</b></td></tr>
+  <tr><td>Dependencia de internet</td><td>Sí (RPCs públicos)</td><td>No (despliegue privado)</td><td><b>No</b></td></tr>
+  <tr><td>Latencia de cumplimiento</td><td>12 s (L1) / 2 s (L2)</td><td>1–2 s (Raft)</td><td><b>~ms (automining)</b></td></tr>
+  <tr><td>Permisionado / corporativo</td><td>Público</td><td>Excelente</td><td><b>Según topología (Besu IBFT)</b></td></tr>
+  <tr><td>Ecosistema de desarrollo</td><td>Extenso (Solidity)</td><td>Go/Java chains</td><td><b>Solidity + Hardhat 3 + ethers</b></td></tr>
+</table>
+<div class="note">Justificación central para la defensa: el MVP prioriza <b>cero coste</b>,
+<b>cero dependencia externa</b> y el <b>ecosistema Solidity</b> (mayor reutilización profesional).
+La red local es una decisión deliberada, no una limitación.</div>
+
+<!-- ================= 5 ================= -->
+<h2 class="sec" id="s5">5. Decisiones de diseño (DEC-01 … DEC-09)</h2>
+<table>
+  <caption>Registro de decisiones (documento vivo)</caption>
+  <tr><th style="width:9%">ID</th><th style="width:30%">Decisión</th><th>Justificación</th></tr>
+  <tr><td>DEC-01</td><td>Modelo SSI (DID + VC + VP).</td><td>El usuario es holder; el sistema no custodia secretos.</td></tr>
+  <tr><td>DEC-02</td><td>Blockchain local Ethereum (Hardhat); no mainnet/testnet.</td><td>Gas = 0, sin RPC externo, sin SPOF. Sustituible por Besu (mismo Solidity).</td></tr>
+  <tr><td>DEC-03</td><td>Contratos en Solidity 0.8.34; Proxy en Python/FastAPI.</td><td>Estándar de facto + agilidad en verificación criptográfica.</td></tr>
+  <tr><td>DEC-04</td><td>Hardhat 3 (Ignition, profile build).</td><td>Despliegues declarativos con estado; TS6 de serie.</td></tr>
+  <tr><td>DEC-05</td><td>En cadena solo hashes y claves públicas; verificación fuera de cadena.</td><td>Coste y latencia mínimos; cadena como ledger auditable.</td></tr>
+  <tr><td>DEC-06</td><td>Caché TTL + JWT efímero + eventos para vencer la latencia.</td><td>Responde a "¿por qué no RADIUS a 10 ms?" (ver sección 9).</td></tr>
+  <tr><td>DEC-07</td><td>Documentar fases y errores con causa raíz.</td><td>Material real para la memoria y trazabilidad.</td></tr>
+  <tr><td>DEC-08</td><td>DID → dirección Ethereum (wallet).</td><td>Verificación <code>ecrecover</code> nativa; usa EIP-191 para rotación.</td></tr>
+  <tr><td>DEC-09</td><td>API de roles <code>assignRole</code>/<code>unassignRole</code>.</td><td>Evita colisión de ABI con <code>grantRole</code> de OpenZeppelin.</td></tr>
+</table>
+<p class="small">El detalle completo de cada decisión está en <code>docs/01-decisiones.md</code> del repositorio.</p>
+
+<!-- ================= 6 ================= -->
+<h2 class="sec" id="s6">6. Arquitectura del sistema</h2>
+<h3 id="s6a">6.1 Capas lógicas</h3>
+<pre>
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  CAPA DE USUARIO                                                            │
+│  Wallet/DID + clave privada + SDK. Nunca se revela la clave; cada petición  │
+│  viaja firmada: POST /query { did, payload(sql, nonce, ts), firma }        │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  CAPA DE ACCESO (PEP) = PROXY VALIDADOR (FastAPI)                          │
+│  · Verifica firma (EIP-191) y anti-replay (nonce + ventana temporal)        │
+│  · Consulta on-chain (solo en miss de caché): registrado?, revocado?,       │
+│    can(did, tabla, op)?                                                     │
+│  · Emite sesión JWT efímera (60–120 s) → latencia ~ms en consultas sucesivas│
+│  · Escucha eventos de revocación → invalida caché y sesiones (< 2 s)        │
+│  · Traduce rol → privilegios SQL y ejecuta con usuario de BD restringido    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  CAPA DE CONSENSO / BLOCKCHAIN (fuente de verdad)                           │
+│  IdentityRegistry · RevocationRegistry · AccessPolicyRegistry               │
+│  (registro, rotación, revocación, RBAC granular, eventos de auditoría)      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  CAPA DE DATOS                                                              │
+│  PostgreSQL 16 (Docker): escucha solo 127.0.0.1; el único usuario con       │
+│  credenciales es el del Proxy (grants mínimos)                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+</pre>
+<h3 id="s6b">6.2 Flujo de autenticación y autorización</h3>
+<pre>
+P1  Usuario:  payload = { sql, nonce, ts };  firma = Sign(keccak(payload))  [wallet]
+P2  Proxy:    valida ts (±30 s) y nonce (no repetido)                        [sin gas]
+P3  Proxy:    owner de la identidad (caché → on-chain si miss)               [view]
+P4  Proxy:    ¿isRevoked?  ¿can(did, tabla, operación)?                      [view]
+P5  Proxy:    OK → JWT de sesión (rol, did, exp) y ejecución en BD con el
+              usuario restringido del rol correspondiente
+P6  Proxy:    devuelve filas/error
+P7  Async:    suscripción a eventos Revoked / RoleRevokedFor → invalidación
+              de caché y de sesiones del DID afectado
+</pre>
+
+<!-- ================= 7 ================= -->
+<h2 class="sec" id="s7">7. Módulo 1 — Entorno y blockchain local</h2>
+<p>El Módulo 1 establece la base: un <b>monorepo</b> con estructura por módulos
+(<code>contracts/ test/ ignition/ scripts/ infra/ docs/</code>), el toolchain <b>Hardhat 3.17</b>
+(template <code>mocha-ethers</code>) y un primer contrato de humo (<code>IdentityRegistry</code>
+stub) verificado de extremo a extremo contra un nodo local.</p>
+<table>
+  <caption>Herramientas del entorno (instaladas y verificadas)</caption>
+  <tr><th>Herramienta</th><th>Versión</th><th>Rol</th></tr>
+  <tr><td>Node.js / npm</td><td>24.19.0 / 11.19.0</td><td>Ejecución del toolchain</td></tr>
+  <tr><td>Hardhat</td><td>3.17.0</td><td>Framework, red local, tests y cobertura</td></tr>
+  <tr><td>Hardhat Ignition</td><td>3.1.8</td><td>Despliegues declarativos con estado</td></tr>
+  <tr><td>solc</td><td>0.8.34</td><td>Compilador Solidity (EVM objetivo: Osaka)</td></tr>
+  <tr><td>ethers.js</td><td>6.17</td><td>Interacción con contratos</td></tr>
+  <tr><td>OpenZeppelin</td><td>5.6.1</td><td>AccessControl, ECDSA, MessageHashUtils</td></tr>
+</table>
+<h3>7.1 Verificación del módulo (resultados reales)</h3>
+<pre>
+$ npx hardhat compile        # 3 ficheros Solidity compilados (evm target: osaka)
+$ npx hardhat test           # 16 passing
+
+$ npx hardhat node --port 8545
+$ npx hardhat ignition deploy ignition/modules/AccessStack.ts --network localhost
+  → AccessStackModule#IdentityRegistry      0xe7f1… (nodo local)
+  → AccessStackModule#RevocationRegistry    0x9fE4…
+  → AccessStackModule#AccessPolicyRegistry  0x5FbD…
+</pre>
+
+<!-- ================= 8 ================= -->
+<h2 class="sec" id="s8">8. Módulo 2 — Contratos de identidad, revocación y permisos</h2>
+<p>El Módulo 2 convierte el stub en la <b>fuente de verdad</b> completa. Tres contratos con
+responsabilidades separadas para responder a tres preguntas distintas: <i>¿quién eres?</i>,
+<i>¿estás expulsado?</i> y <i>¿puedes hacer esto?</i>.</p>
+
+<h3 id="s8a">8.1 <code>IdentityRegistry</code> — identidad y rotación de clave</h3>
+<ul>
+  <li><b>DEC-08:</b> cada DID (hash) se asocia a una <b>dirección Ethereum</b> (clave secp256k1 de la
+  wallet del usuario).</li>
+  <li><code>registerDID(didHash, owner)</code>: solo <code>ADMIN_ROLE</code>; rechaza duplicados.</li>
+  <li><code>rotateKey(didHash, newOwner, sig)</code>: <b>autogestión</b> — quien posee la clave ANTIGUA
+  firma (EIP-191/<code>eth_sign</code>) el payload <code>keccak256(didHash, newOwner)</code>; el contrato
+  recupera la dirección con <code>ECDSA.recover</code>. Sin intervención del admin (soberanía).</li>
+  <li><code>deactivate(didHash)</code>: kill-switch administrado e irreversible.</li>
+  <li>Vistas sin gas: <code>isRegistered</code>, <code>isDeactivated</code>, <code>getOwner</code>.</li>
+  <li>Eventos: <code>DIDRegistered</code>, <code>KeyRotated</code>, <code>IdentityDeactivated</code>.</li>
+</ul>
+<h3 id="s8b">8.2 <code>RevocationRegistry</code> — revocación irreversible</h3>
+<ul>
+  <li><code>revoke(didHash)</code>: solo <code>REVOKER_ROLE</code> (rol concedible a más operadores por
+  el admin). Emite <b><code>Revoked</code></b> — el evento que el Proxy escucha para invalidar caché
+  y sesiones.</li>
+  <li><code>isRevoked(didHash)</code>: vista sin gas.</li>
+  <li>Semántica: <b>irreversible</b> (expulsión / clave comprometida). Es la pieza crítica de
+  cualquier sistema descentralizado: aquí la revocación es inmediata, auditable y propagable.</li>
+</ul>
+<h3 id="s8c">8.3 <code>AccessPolicyRegistry</code> — RBAC descentralizado</h3>
+<ul>
+  <li>Roles de organización: <code>ROLE_ADMIN</code>, <code>ROLE_WRITER</code>, <code>ROLE_VIEWER</code>,
+  <code>ROLE_ANALYST</code>.</li>
+  <li>Operaciones como bitmask: <code>OP_READ=1</code>, <code>OP_WRITE=2</code>, <code>OP_DELETE=4</code>.</li>
+  <li><code>setPolicy(rol, tabla, ops)</code>: solo admin; define la matriz rol→tabla→operación.</li>
+  <li><code>assignRole(did, rol)</code> / <code>unassignRole(did)</code>: <b>reversibles</b>; emiten
+  <code>RoleGrantedFor</code>/<code>RoleRevokedFor</code>.</li>
+  <li><code>can(did, tabla, op)</code>: <b>oráculo de autorización</b>, vista sin gas, usada por el Proxy.</li>
+  <li><b>DEC-09:</b> nombres propios para evitar colisión ABI con <code>AccessControl.grantRole</code>.</li>
+</ul>
+<h3 id="s8d">8.4 Story de demostración: el "momento mágico"</h3>
+<p>Escenario médico sobre el que se apoya la defensa: doctores, analistas y un intruso.</p>
+<table>
+  <caption>Permisos reales consultados al contrato (salida del seed)</caption>
+  <tr><th>Usuario</th><th>Rol</th><th>Consulta</th><th>Resultado</th></tr>
+  <tr><td>doctorA</td><td>VIEWER</td><td>SELECT diagnosticos</td><td><span class="tag green">PERMITIDO</span></td></tr>
+  <tr><td>doctorA</td><td>VIEWER</td><td>UPDATE diagnosticos</td><td><span class="tag red">DENEGADO</span></td></tr>
+  <tr><td>doctorA</td><td>VIEWER</td><td>DELETE diagnosticos</td><td><span class="tag red">DENEGADO</span></td></tr>
+  <tr><td>analyst</td><td>ANALYST</td><td>SELECT ventas</td><td><span class="tag green">PERMITIDO</span></td></tr>
+  <tr><td>analyst</td><td>ANALYST</td><td>SELECT diagnosticos</td><td><span class="tag red">DENEGADO</span></td></tr>
+  <tr><td>intruso</td><td>— (no registrado)</td><td>cualquiera</td><td><span class="tag red">DENEGADO</span></td></tr>
+</table>
+<pre>
+Momento mágico (en vivo, 2 transacciones):
+  Doctor A lee diagnosticos               → true
+  TX unassignRole(doctorA)                → (1 transacción)
+  Doctor A lee diagnosticos AHORA         → false   ← acceso retirado en caliente
+  TX assignRole(doctorA)                  → (1 transacción)
+  Doctor A lee diagnosticos DE NUEVO      → true    ← acceso restituido
+</pre>
+<div class="ok">Verificación del módulo: <b>16 pruebas Mocha verdes</b> y <b>cobertura 100 % de líneas /
+statements</b> en los tres contratos (criterio del plan: &gt; 80 %). Seed idempotente.</div>
+
+<!-- ================= 9 ================= -->
+<h2 class="sec" id="s9">9. Módulo 3 — Proxy Validador (diseño cerrado)</h2>
+<p>Componente central para responder a la pregunta más esperada del tribunal:
+<b>"¿una consulta a la blockchain no tarda 2 segundos frente a los 10 ms de RADIUS?"</b>. La
+respuesta es arquitectónica: <b>la blockchain nunca está en el camino crítico</b>.</p>
+<table>
+  <caption>Estrategia de latencia del Proxy</caption>
+  <tr><th>Mecanismo</th><th>Efecto</th></tr>
+  <tr><td>Caché TTL (30 s) de estado on-chain</td><td>Identidad/rol/revocación verificados una vez, reutilizados N veces (<i>cache hit</i>).</td></tr>
+  <tr><td>Token de sesión JWT efímero (60–120 s)</td><td>Consultas sucesivas del mismo usuario = validación local (~milisegundos).</td></tr>
+  <tr><td>Vistas sin gas (lecturas)</td><td>Los <i>miss</i> de caché no pagan consenso: solo un <code>eth_call</code>.</td></tr>
+  <tr><td>Listener de eventos <code>Revoked</code></td><td>La revocación se propaga en &lt; 2 s invalidando caché y sesiones.</td></tr>
+  <tr><td>Fail-closed / fail-open por recurso</td><td>Con la cadena caída pero caché caliente, el acceso continúa; decisión política.</td></tr>
+</table>
+<h3>9.1 API orientativa</h3>
+<pre>
+POST /auth/verify   { did, payload{sql, nonce, ts}, firma }   → { veredicto, rol, jws }
+POST /query         { jws, sql }                              → filas o error 403/401
+POST /admin/revoke  { did }                                   → invalida caché/sesiones (admin)
+GET  /metrics                                                → Prometheus
+</pre>
+
+<!-- ================= 10 ================= -->
+<h2 class="sec" id="s10">10. Módulo 4 — PostgreSQL en Docker (PEP, diseño)</h2>
+<p>Elección del tribunal: <b>PostgreSQL 16 en Docker</b> como base de datos protegida. La defensa se
+apoya en <b>defensa en profundidad</b>: el Proxy es la puerta lógica y el SGBD la red de seguridad.</p>
+<table>
+  <caption>Barreras anti-bypass</caption>
+  <tr><th>Barrera</th><th>Implementación</th></tr>
+  <tr><td>Red interna Docker</td><td>PostgreSQL escucha solo <code>127.0.0.1</code> / red privada; ningún
+  contenedor cliente puede alcanzar el puerto 5432 salvo el Proxy.</td></tr>
+  <tr><td>Usuario de BD único y restringido</td><td>El Proxy usa un usuario con <b>grants mínimos</b>
+  por rol (traducción de la política on-chain); los clientes jamás reciben credenciales de BD.</td></tr>
+  <tr><td>Validación en el Proxy</td><td>Parseo de la query y <i>allowlist</i> de tablas según
+  <code>can(did, tabla, op)</code>.</td></tr>
+  <tr><td>Consecuencia de error del Proxy</td><td>Aunque el traducción fallara, el SGBD rechaza la
+  operación por falta de grant (segunda barrera real).</td></tr>
+</table>
+<pre>
+Cliente(DID+clave) → Proxy(FastAPI, usuario BD restringido) → PostgreSQL 16 :5432 (127.0.0.1)
+                                                                  │
+                                                                  └─ redes externas: BLOQUEADO por firewall/red interna
+</pre>
+
+<!-- ================= 11 ================= -->
+<h2 class="sec" id="s11">11. Módulo 5 — Integración final y pruebas (diseño)</h2>
+<ul>
+  <li><b>Orquestación:</b> <code>docker compose</code> con nodo blockchain, Proxy, PostgreSQL y
+  cliente de demo; scripts <code>up.sh</code>, <code>demo.sh</code>, <code>chaos.sh</code>.</li>
+  <li><b>Demostración en directo:</b> usuario A (lectura) SELECT OK / DELETE fail; usuario B sin rol
+  → todo denegado; <b>momento mágico</b>: cambiar permisos en la blockchain y ver el efecto al instante.</li>
+  <li><b>Pruebas de estrés y destrucción:</b> flood de <code>/verify</code> (locust), medición de
+  CPU/RAM de nodo y Proxy (<code>docker stats</code>), y <b>caída del nodo blockchain</b> para
+  demostrar que con caché el acceso legítimo continúa y la revocación local se mantiene.</li>
+  <li><b>Comparativa:</b> autenticación tradicional de BD vs. blockchain (cálidos/fríos), con gráficas.</li>
+</ul>
+
+<!-- ================= 12 ================= -->
+<h2 class="sec" id="s12">12. Seguridad en el diseño</h2>
+<table>
+  <caption>Matriz de amenazas y mitigaciones</caption>
+  <tr><th style="width:26%">Amenaza</th><th>Mitigación</th></tr>
+  <tr><td>Bypass del Proxy (conexión directa a BD)</td><td>Red interna Docker + usuario único de BD con grants mínimos (sección 10).</td></tr>
+  <tr><td>Replay de petición firmada</td><td>Nonce (memoria del Proxy) + ventana temporal ±30 s.</td></tr>
+  <tr><td>Robo de clave de usuario</td><td>Rotación autogestionada (<code>rotateKey</code>) + revocación
+  irreversible de identidad (<code>RevocationRegistry</code>).</td></tr>
+  <tr><td>Revocación tardía de permisos</td><td>JWT corto + invalidación por eventos (&lt; 2 s).</td></tr>
+  <tr><td>DoS al servidor de identidad</td><td>No existe: la verdad está replicada/validable en la capa
+  blockchain; el Proxy es stateless y escalable.</td></tr>
+  <tr><td>Escritura maliciosa / fuga</td><td>Traducción rol→grants + validación de query + grants mínimos.</td></tr>
+  <tr><td>Alteración retroactiva de permisos</td><td>Ledger inmutable; cada acción emite evento auditable.</td></tr>
+</table>
+
+<!-- ================= 13 ================= -->
+<h2 class="sec" id="s13">13. Métricas y evaluación</h2>
+<table>
+  <caption>Plan de métricas del Módulo 5</caption>
+  <tr><th>Métrica</th><th>Unidad</th><th>Objetivo</th></tr>
+  <tr><td>Latencia de autenticación (frío / caliente / JWT)</td><td>ms (p50/p95/p99)</td><td>p95 &lt; 150 ms caliente; ~ms con JWT</td></tr>
+  <tr><td>coste por transacción (gas)</td><td>gas / USD</td><td>0 en red local (solo escrituras admin)</td></tr>
+  <tr><td>CPU / RAM del nodo y del Proxy</td><td>% / MB</td><td>Nodo &lt; 2 vCPU amp; &lt; 2 GB bajo carga</td></tr>
+  <tr><td>Propagación de la revocación</td><td>ms</td><td>&lt; 2000</td></tr>
+  <tr><td>Disponibilidad ante caída de nodo</td><td>% / evento</td><td>Continuidad con caché caliente</td></tr>
+  <tr><td>Ratio de acierto de caché</td><td>%</td><td>&gt; 90</td></tr>
+</table>
+
+<!-- ================= 14 ================= -->
+<h2 class="sec" id="s14">14. Registro de dificultades (errores reales y su resolución)</h2>
+<p>Cada error fue documentado en el repositorio (<code>docs/errores/</code>) con síntoma, causa raíz y
+solución. Este registro es material de primera mano para el apartado "Dificultades encontradas" de la
+memoria, demostrando gestión real del proyecto.</p>
+<table>
+  <caption>Errores encontrados y resolución</caption>
+  <tr><th style="width:5%">#</th><th style="width:34%">Error</th><th>Causa raíz</th><th>Solución</th></tr>
+  <tr><td>1</td><td>npm no ejecuta <code>postinstall</code> de esbuild</td><td>Política <code>allowScripts</code> de npm 11</td><td><code>npm install-scripts approve esbuild</code> (aprobación granular)</td></tr>
+  <tr><td>2</td><td>Test comparaba <code>bytes</code> ethers (hex) con Uint8Array</td><td>Los <code>bytes</code> se devuelven como cadena hex</td><td>Normalizar con <code>ethers.hexlify()</code>; convención en todos los tests</td></tr>
+  <tr><td>3</td><td><code>pkill -f</code> mató el propio shell</td><td>El patrón estaba en la línea de comandos del shell</td><td>Gestión por PID; verificación de estado real</td></tr>
+  <tr><td>4</td><td><code>nonce has already been used</code> (ethers)</td><td>Automining + caché de nonce del emisor</td><td>Nonce explícito antes de cada envío</td></tr>
+  <tr><td>5</td><td>Sigue <code>NONCE_EXPIRED</code> incluso con nonce explícito</td><td><code>getTransactionCount</code> del provider 1 por detrás (caché)</td><td><b>JSON-RPC crudo</b> <code>eth_getTransactionCount(pending)</code></td></tr>
+  <tr><td>6</td><td>Reincidencia de <code>pkill</code> suicida</td><td>Hábito de matar por patrón</td><td>Guardar PID al lanzar; <code>kill $(cat pid)</code></td></tr>
+  <tr><td>7</td><td><code>toEthSignedMessageHash</code> inexistente (OZ)</td><td>API movida a <code>MessageHashUtils</code> en OZ 5.6</td><td>Importar <code>MessageHashUtils</code></td></tr>
+  <tr><td>8</td><td>ABI ambigua <code>grantRole(bytes32,bytes32)</code></td><td>Colisión con <code>AccessControl</code></td><td>Renombrar a <code>assignRole</code>/<code>unassignRole</code> (DEC-09)</td></tr>
+  <tr><td>9</td><td><code>signMessage(hex)</code> firmaba el texto, no los bytes</td><td>ethers firma <code>string</code> como UTF-8</td><td>Firmar <code>ethers.getBytes(...)</code></td></tr>
+  <tr><td>10</td><td>Matcher <code>.reverted</code> deprecado en HH3</td><td>Nueva API de matchers</td><td><code>.revert()</code></td></tr>
+</table>
+<h3>14.1 Lecciones transversales</h3>
+<ul>
+  <li><b>No desactivar las políticas de seguridad</b> de npm; aprobar el paquete exacto.</li>
+  <li><b>Conocer los tipos de retorno</b> de ethers (hex vs. binario) antes de escribir tests.</li>
+  <li><b>Gestión de procesos por PID</b>, nunca por patrón que esté en la propia línea de comandos.</li>
+  <li><b>Preferir JSON-RPC crudo</b> cuando se necesite un estado exacto y vigente de la red.</li>
+  <li><b>Releer la documentación de la versión concreta</b> de cada librería (OZ 5.6, HH3).</li>
+</ul>
+
+<!-- ================= 15 ================= -->
+<h2 class="sec" id="s15">15. Guía de reproducción</h2>
+<pre>
+# 1) Dependencias
+npm install
+
+# 2) Tests y cobertura
+npx hardhat test
+npx hardhat test --coverage
+
+# 3) Nodo local persistente
+npx hardhat node --port 8545 &
+
+# 4) Despliegue (nodo limpio: borrar ignition/deployments si ya hay)
+rm -rf ignition/deployments
+npx hardhat ignition deploy ignition/modules/AccessStack.ts --network localhost
+
+# 5) Seed de la demo (idempotente)
+npx hardhat run scripts/seed.ts --network localhost
+</pre>
+<div class="note">Módulos 3–5 (Proxy, PostgreSQL, orquestación) añadirán un <code>docker compose up</code>
+como único comando de la demo final.</div>
+
+<!-- ================= 16 ================= -->
+<h2 class="sec" id="s16">16. Trabajo futuro</h2>
+<table>
+  <caption>Líneas de evolución planificadas</caption>
+  <tr><th>Mejora</th><th>Beneficio</th></tr>
+  <tr><td>Varios nodos (Besu IBFT / multi-peer) y consenso real</td><td>Elimina también el nodo único como punto de concentración; validación real de tolerancia a fallos.</td></tr>
+  <tr><td>Credenciales verificables completas (VC firmadas por emisor, ZKPs)</td><td>Privacidad selectiva en la presentación de atributos.</td></tr>
+  <tr><td>Rotación por recuperación (dual-clave, threshold)</td><td>Mitiga pérdida de clave única.</td></tr>
+  <tr><td>Entorno de red virtual (Mininet)</td><td>Recupera el caso de uso de red (802.1X) si se desea ampliar el alcance.</td></tr>
+  <tr><td>Hardware wallet / TPM como custodia de clave</td><td>Endurece la soberanía del usuario.</td></tr>
+</table>
+
+<!-- ================= 17 ================= -->
+<h2 class="sec" id="s17">17. Referencias del repositorio</h2>
+<table>
+  <caption>Estructura y documentación</caption>
+  <tr><th>Ruta</th><th>Contenido</th></tr>
+  <tr><td><code>contracts/</code></td><td><code>IdentityRegistry.sol</code>,
+  <code>RevocationRegistry.sol</code>, <code>AccessPolicyRegistry.sol</code></td></tr>
+  <tr><td><code>test/</code></td><td>Tests Mocha + Chai (TS) de los tres contratos</td></tr>
+  <tr><td><code>ignition/modules/</code></td><td>Módulo de despliegue <code>AccessStack.ts</code></td></tr>
+  <tr><td><code>scripts/</code></td><td><code>seed.ts</code> (idempotente), <code>lib/deployments.ts</code></td></tr>
+  <tr><td><code>docs/01-decisiones.md</code></td><td>Registro DEC-01…DEC-09</td></tr>
+  <tr><td><code>docs/fases/</code></td><td>Memoria de cada módulo (1 y 2 realizados)</td></tr>
+  <tr><td><code>docs/errores/</code></td><td>Registro de errores con causa raíz (apartado 14)</td></tr>
+  <tr><td><code>AGENTS.md</code></td><td>Contexto de construcción (template Hardhat) para agentes IA</td></tr>
+</table>
+<p class="small">Plataforma: Kali Linux 2026.3 · Node 24 · Hardhat 3.17 · Solidity 0.8.34 ·
+OpenZeppelin 5.6.1 · ethers 6.17 · GitHub Actions: no aplica (sin CI en el repo).</p>
+
+</body>
+</html>

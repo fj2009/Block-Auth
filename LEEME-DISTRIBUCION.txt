@@ -1,0 +1,25 @@
+Archivador SSI sobre Blockchain Ethereum local — TFG
+================================================================
+
+Copia de distribucion (solo fuente). Al descomprimirla quedan DOS fases por
+instalar/arrancar, pero el instalador lo hace todo automaticamente:
+
+    unzip TFG-AuthSSI.zip
+    cd TFG-AuthSSI
+
+    # 1) Instalador: dependencias npm + compilar contratos + tests + venv del Proxy
+    ./instalar.sh
+
+    # 2) Arranque en dos fases:
+    #    Fase 1 · blockchain (nodo 8545 + despliegue + seed)
+    #    Fase 2 · aplicacion (elige BD: 1 predeterminada / 2 ya montada / 3 personalizada)
+    ./arrancar-sistema.sh start
+
+    # Web de uso: http://127.0.0.1:8001/
+    # Usuario demo: cardi   Password: cardofj2009
+
+    # Parada
+    ./arrancar-sistema.sh stop
+
+Requiere: Node.js >= 18, npm, Python 3 (y Docker solo si eliges la BD predeterminada).
+Manual completo: docs/manual-de-uso.md
