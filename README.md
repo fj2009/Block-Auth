@@ -1,4 +1,4 @@
-# Sistema de Autenticación Descentralizada sobre Blockchain — TFG
+# Sistema de Autenticación Descentralizada sobre Blockchain
 
 Trabajo de Fin de Grado (Telecomunicaciones): sustitución de los servidores de identidad
 centrales (RADIUS/AD) por un sistema **SSI (Self-Sovereign Identity)** sobre **blockchain
