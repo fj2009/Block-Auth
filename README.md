@@ -110,6 +110,13 @@ registrados en `docs/errores/`.
   - ✅ **Control Granular:** Permite definir roles específicos
   (Admin, Viewer, Editor) directamente en la cadena de bloques.
 
+🎓 Proyecto de TFG
+
+  Este proyecto ha sido desarrollado como parte del Trabajo de
+  Fin de Grado en Telecomunicaciones, enfocándose en la
+  aplicación de tecnologías descentralizadas para la mejora de
+  la ciberseguridad en infraestructuras de datos.
+
 # Gestión "manual" equivalente:
 npx hardhat node --port 8545                                          # nodo local persistente
 npx hardhat ignition deploy ignition/modules/AccessStack.ts --network localhost
@@ -133,10 +140,3 @@ docs/               # decisions + fases + errores (material para la memoria)
 Ver `AGENTS.md` en la raíz (generado junto al proyecto Hardhat): activa la skill `hardhat`
 para tareas de test/config, y consulta la documentación oficial de Hardhat 3
 (https://hardhat.org/llms.txt) y ethers v6 (https://docs.ethers.org/v6/).
-
-🎓 Proyecto de TFG
-
-  Este proyecto ha sido desarrollado como parte del Trabajo de
-  Fin de Grado en Telecomunicaciones, enfocándose en la
-  aplicación de tecnologías descentralizadas para la mejora de
-  la ciberseguridad en infraestructuras de datos.
