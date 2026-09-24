@@ -36,6 +36,22 @@ Trabajo de Fin de Grado (Telecomunicaciones):
   Proxy concede el acceso a la Base de Datos. Si no, la petición
   es rechazada instantáneamente.
 
+## Arquitectura
+
+```
+┌──────────────────────┐        ┌───────────────────────┐        ┌──────────────────────────┐
+│  Navegador (Block-Auth) │ 1 ·  │  Agente FastAPI :8001   │ 2 ·   │  Blockchain local Hardhat  │
+│  WebCrypto + ethers.js │─firma─│  verifica firmas off-  │──RPC──│  :8545 · cero gas          │
+│  keystore cifrado      │  POST │  chain, emite JWT      │       │  Identity/Revocation/ACL   │
+└──────────────────────┘        └──────────┬────────────┘        └──────────────────────────┘
+                                            │ 3 · SQL solo si can(didHash, TABLA, OP)
+                                    ┌───────▼────────┐
+                                    │ PostgreSQL 16   │  solo datos de negocio
+                                    │ :5433 · sin     │  (archivos, diagnosticos,
+                                    │ contraseñas     │  ventas)
+                                    └─────────────────┘
+```
+
 ## Estado del proyecto (roadmap 5 módulos)
 
 | Módulo | Contenido | Estado |
