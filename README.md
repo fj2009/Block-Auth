@@ -121,7 +121,7 @@ registrados en `docs/errores/`.
 npx hardhat node --port 8545                                          # nodo local persistente
 npx hardhat ignition deploy ignition/modules/AccessStack.ts --network localhost
 npx hardhat run scripts/seed.ts --network localhost                   # idempotente: doctorA/analyst/intruso
-```
+
 
 ## Estructura
 
@@ -136,7 +136,8 @@ docs/               # decisions + fases + errores (material para la memoria)
 
 
 ## Trabajando sobre este proyecto
-
+```
 Ver `AGENTS.md` en la raíz (generado junto al proyecto Hardhat): activa la skill `hardhat`
 para tareas de test/config, y consulta la documentación oficial de Hardhat 3
 (https://hardhat.org/llms.txt) y ethers v6 (https://docs.ethers.org/v6/).
+```
