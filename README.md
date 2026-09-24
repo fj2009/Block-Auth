@@ -1,11 +1,39 @@
 # Sistema de Autenticación Descentralizada sobre Blockchain
 
-Trabajo de Fin de Grado (Telecomunicaciones): sustitución de los servidores de identidad
-centrales (RADIUS/AD) por un sistema **SSI (Self-Sovereign Identity)** sobre **blockchain
-Ethereum local**, eliminando el punto único de fallo y endureciendo el arranque frente a DoS.
+Trabajo de Fin de Grado (Telecomunicaciones):# 🛡️ Block-Auth: Decentralized Access Control System
+
+  **Block-Auth** es un sistema de autenticación avanzado que
+  sustituye los servidores de identidad centralizados (como
+  RADIUS o Active Directory) por un registro inmutable basado en
+  **Blockchain**.
+
+  El objetivo principal es eliminar el **Punto Único de Fallo
+  (SPOF)** y devolver la soberanía de la identidad al usuario
+  mediante el uso de **SSI (Self-Sovereign Identity)** y 
+  endureciendo el arranque frente a DoS.
+  .
 
 <img width="956" height="661" alt="Captura desde 2026-09-24 10-10-13" src="https://github.com/user-attachments/assets/7af20e5e-6579-4306-b502-a594c40fda1a" />
 <img width="956" height="661" alt="Captura desde 2026-09-24 10-46-05" src="https://github.com/user-attachments/assets/72816ede-607c-4d84-b724-d98fe797feaf" />
+
+## 🚀 ¿Cómo funciona?
+
+  En lugar de utilizar contraseñas almacenadas en una base de
+  datos, Block-Auth utiliza **criptografía de clave pública**.
+  El flujo de acceso es el siguiente:
+
+  1. **Firma Digital:** El usuario solicita acceso a un recurso
+  firmando la petición con su clave privada.
+  2. **Proxy de Validación:** Un middleware (desarrollado en
+  FastAPI) intercepta la petición y verifica que la firma sea
+  válida.
+  3. **Consulta a la Blockchain:** El Proxy consulta un **Smart 
+  Contract** en la Blockchain para verificar si la dirección
+  pública del usuario posee el rol necesario (RBAC - Role-Based
+  Access Control).
+  4. **Acceso al Recurso:** Si la validación es exitosa, el
+  Proxy concede el acceso a la Base de Datos. Si no, la petición
+  es rechazada instantáneamente.
 
 ## Estado del proyecto (roadmap 5 módulos)
 
@@ -52,6 +80,34 @@ registrados en `docs/errores/`.
 ```
 ./iniciar.sh log        
 ```
+## 🛠️ Stack Tecnológico
+
+  ### Backend & Infraestructura
+  - **Blockchain:** Ethereum / EVM (implementado localmente con
+  Ganache/Hardhat).
+  - **Smart Contracts:** Solidity.
+  - **Middleware / API:** Python con FastAPI y Web3.py.
+  - **Base de Datos:** SQL / NoSQL (Protegida mediante el
+  Proxy).
+
+  ### Seguridad y Criptografía
+  - **Identidad:** DIDs (Decentralized Identifiers).
+  - **Algoritmo de Firma:** ECDSA (Elliptic Curve Digital
+  Signature Algorithm).
+  - **Modelo de Acceso:** RBAC (Role-Based Access Control)
+  descentralizado.
+
+## 🌟 Características Principales
+
+  - ✅ **Sin Punto Único de Fallo:** Al estar la identidad en la
+  Blockchain, el sistema no depende de un único servidor
+  central.
+  - ✅ **Inmutabilidad:** Los permisos son auditables y no
+  pueden ser alterados sin dejar rastro.
+  - ✅ **Privacidad y Control:** El usuario es el único dueño de
+  sus claves privadas.
+  - ✅ **Control Granular:** Permite definir roles específicos
+  (Admin, Viewer, Editor) directamente en la cadena de bloques.
 
 # Gestión "manual" equivalente:
 npx hardhat node --port 8545                                          # nodo local persistente
@@ -69,6 +125,12 @@ scripts/            # Scripts: seed + utilidades de despliegue
 infra/              # Orquestación Docker (Módulo 5)
 docs/               # decisions + fases + errores (material para la memoria)
 ```
+🎓 Proyecto de TFG
+
+  Este proyecto ha sido desarrollado como parte del Trabajo de
+  Fin de Grado en Telecomunicaciones, enfocándose en la
+  aplicación de tecnologías descentralizadas para la mejora de
+  la ciberseguridad en infraestructuras de datos.
 
 ## Trabajando sobre este proyecto
 
