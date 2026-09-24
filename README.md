@@ -1,6 +1,7 @@
-# Sistema de Autenticación Descentralizada sobre Blockchain
 
-Trabajo de Fin de Grado (Telecomunicaciones):# 🛡️ Block-Auth: Decentralized Access Control System
+# 🛡️ Block-Auth: Decentralized Access Control System
+
+Trabajo de Fin de Grado (Telecomunicaciones):
 
   **Block-Auth** es un sistema de autenticación avanzado que
   sustituye los servidores de identidad centralizados (como
