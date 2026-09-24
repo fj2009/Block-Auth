@@ -110,7 +110,7 @@ registrados en `docs/errores/`.
   - ✅ **Control Granular:** Permite definir roles específicos
   (Admin, Viewer, Editor) directamente en la cadena de bloques.
 
-🎓 Proyecto de TFG
+## 🎓 Proyecto de TFG
 
   Este proyecto ha sido desarrollado como parte del Trabajo de
   Fin de Grado en Telecomunicaciones, enfocándose en la
