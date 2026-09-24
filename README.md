@@ -3,7 +3,8 @@
 Trabajo de Fin de Grado (Telecomunicaciones): sustitución de los servidores de identidad
 centrales (RADIUS/AD) por un sistema **SSI (Self-Sovereign Identity)** sobre **blockchain
 Ethereum local**, eliminando el punto único de fallo y endureciendo el arranque frente a DoS.
-
+<img width="956" height="661" alt="Captura desde 2026-09-24 10-10-13" src="https://github.com/user-attachments/assets/7af20e5e-6579-4306-b502-a594c40fda1a" />
+<img width="956" height="661" alt="Captura desde 2026-09-24 10-46-05" src="https://github.com/user-attachments/assets/72816ede-607c-4d84-b724-d98fe797feaf" />
 ## Estado del proyecto (roadmap 5 módulos)
 
 | Módulo | Contenido | Estado |
